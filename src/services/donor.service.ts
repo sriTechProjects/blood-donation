@@ -17,11 +17,17 @@ export class DonorService {
     return donorRepository.getDonorById(id);
   }
 
-  async listDonors(): Promise<Donor[]> {
-    return donorRepository.getAllDonors();
+  async listDonors(page: number, limit: number): Promise<Donor[]> {
+    return donorRepository.getAllDonors(page, limit);
   }
 
   async updateDonorDetails(id: number, data: Partial<Donor>): Promise<Donor> {
+    if (data.email) {
+      const existingDonor = await donorRepository.getDonorByEmail(data.email);
+      if (existingDonor && existingDonor.id !== id) {
+        throw new Error("A donor with this email already exists.");
+      }
+    }
     return donorRepository.updateDonor(id, data);
   }
 

@@ -4,8 +4,8 @@ import { DonorController } from "@/controllers/donor.controller";
 const donorController = new DonorController();
 
 // GET all donors
-export async function GET() {
-  return donorController.findAll();
+export async function GET(req: Request) {
+  return donorController.findAll(req);
 }
 
 // POST a new donor

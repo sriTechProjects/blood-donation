@@ -15,8 +15,14 @@ export class DonorRepository {
     return prisma.donor.findUnique({ where: { email } });
   }
 
-  async getAllDonors(): Promise<Donor[]> {
-    return prisma.donor.findMany();
+  async getAllDonors(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<Donor[]> {
+    return prisma.donor.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
   async updateDonor(id: number, data: Partial<Donor>): Promise<Donor> {
